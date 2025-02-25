@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tareas Externas</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      .menu-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+
+      .menu-button {
+        background-color: #da1212;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      .menu-list {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        min-width: 150px;
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+      }
+
+      .menu-list a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: black;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .menu-list a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tareas Externas</h1>
+    <ul id="externalTasksList"></ul>
+    <div class="menu-container">
+      <button class="menu-button" onclick="toggleMenu()">☰ Menú</button>
+      <div class="menu-list" id="menuList">
+        <a href="index.html">Inicio</a>
+        <a href="tareasExternas.html">Tareas Externas</a>
+        <a href="notas.html">Notas Rápidas</a>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
+        let taskList = document.getElementById("externalTasksList");
+
+        // Si no hay tareas, mostrar mensaje
+        if (tasks.length === 0) {
+          taskList.innerHTML = "<li>No hay tareas externas guardadas.</li>";
+          return;
+        }
+
+        // Mostrar cada tarea en la lista
+        tasks.forEach((task) => {
+          let listItem = document.createElement("li");
+          listItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
+          taskList.appendChild(listItem);
+        });
+      });
+
+      <!-- Menú desplegable -->
+      function toggleMenu() {
+        document.getElementById("menuList").classList.toggle("show");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.matches(".menu-button")) {
+          let dropdowns = document.getElementsByClassName("menu-list");
+          for (let i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains("show")) {
+              openDropdown.classList.remove("show");
+            }
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

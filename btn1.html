@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Materias</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1,
+      h2 {
+        text-align: center;
+      }
+      .section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input[type="text"],
+      input[type="number"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .finalizada {
+        text-decoration: line-through;
+        opacity: 0.7;
+      }
+      .boton-borrar {
+        background-color: #ff4d4d;
+      }
+      .boton-borrar:hover {
+        background-color: #ff1a1a;
+      }
+      .actividad-item,
+      .tarea-item,
+      .nota-item,
+      .evaluacion-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      .promedio {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .boton-regresar {
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="nombreClase"></h1>
+      <h2 id="nombreDocente"></h2>
+
+      <!-- Sección para tareas -->
+      <div class="section">
+        <h2>Tareas</h2>
+        <button onclick="mostrarFormularioTarea()">Crear Tarea</button>
+        <div id="formularioTarea" style="display: none">
+          <input
+            type="text"
+            id="taskName"
+            placeholder="Nombre de la tarea..."
+          />
+          <input
+            type="text"
+            id="subTasks"
+            placeholder="Subtareas (separadas por comas)..."
+          />
+          <input
+            type="number"
+            id="taskHours"
+            placeholder="Horas invertidas..."
+          />
+          <button onclick="agregarTarea()">Agregar Tarea</button>
+        </div>
+        <div id="tareasList"></div>
+      </div>
+
+      <!-- Sección para notas -->
+      <div class="section">
+        <h2>Notas</h2>
+        <button onclick="mostrarFormularioNota()">Crear Nota</button>
+        <div id="formularioNota" style="display: none">
+          <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
+          <button onclick="agregarNota()">Agregar Nota</button>
+        </div>
+        <div id="notasList"></div>
+      </div>
+
+      <!-- Sección para evaluaciones -->
+      <div class="section">
+        <h2>Evaluaciones</h2>
+        <button onclick="mostrarFormularioEvaluacion()">
+          Crear Evaluación
+        </button>
+        <div id="formularioEvaluacion" style="display: none">
+          <label for="tipoEvaluacion">Tipo de Evaluación:</label>
+          <select id="tipoEvaluacion">
+            <option value="parcial">Parcial</option>
+            <option value="quiz">Quiz</option>
+          </select>
+          <label for="fechaEvaluacion">Fecha:</label>
+          <input type="date" id="fechaEvaluacion" />
+          <label for="descripcionTemas">Descripción de los Temas:</label>
+          <textarea
+            id="descripcionTemas"
+            placeholder="Describe los temas evaluados..."
+          ></textarea>
+          <button onclick="agregarEvaluacion()">Agregar Evaluación</button>
+        </div>
+        <div id="evaluacionesList"></div>
+      </div>
+
+      <!-- Sección para calcular promedio  -->
+      <div class="section">
+        <h2>Calculadora de Promedio</h2>
+        <div class="form-group">
+          <label for="nombreActividad">Nombre de la Actividad:</label>
+          <input
+            type="text"
+            id="nombreActividad"
+            placeholder="Ej: Examen Parcial"
+          />
+        </div>
+        <div class="form-group">
+          <label for="porcentajeActividad">Porcentaje de la Actividad:</label>
+          <input
+            type="number"
+            id="porcentajeActividad"
+            placeholder="Ej: 40"
+            min="0"
+            max="100"
+          />
+        </div>
+        <div class="form-group">
+          <label for="calificacionActividad">Calificación:</label>
+          <input
+            type="number"
+            id="calificacionActividad"
+            placeholder="Ej: 85"
+            min="0"
+            max="100"
+          />
+        </div>
+        <button onclick="agregarActividad()">Agregar Actividad</button>
+
+        <div class="actividades-list" id="actividadesList"></div>
+        <div class="promedio" id="promedioResultado"></div>
+      </div>
+
+      <div class="boton-regresar">
+        <button onclick="regresarInicio()">Regresar</button>
+      </div>
+    </div>
+
+    <script>
+      // Variables globales
+      let actividades = [];
+      let tareas = [];
+      let notas = [];
+      let evaluaciones = [];
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nombreClase = urlParams.get("nombre");
+        const nombreDocente = urlParams.get("docente");
+
+        if (nombreClase && nombreDocente) {
+          document.getElementById("nombreClase").textContent =
+            decodeURIComponent(nombreClase);
+          document.getElementById(
+            "nombreDocente"
+          ).textContent = `Docente: ${decodeURIComponent(nombreDocente)}`;
+        } else {
+          alert("No se encontraron datos de la clase o docente.");
+          window.location.href = "index.html";
+        }
+      });
+
+      // promedio
+      function agregarActividad() {
+        const nombre = document.getElementById("nombreActividad").value;
+        const porcentaje = parseFloat(
+          document.getElementById("porcentajeActividad").value
+        );
+        const calificacion = parseFloat(
+          document.getElementById("calificacionActividad").value
+        );
+
+        if (!nombre || isNaN(porcentaje) || isNaN(calificacion)) {
+          alert("Por favor, completa todos los campos correctamente.");
+          return;
+        }
+
+        if (porcentaje < 0 || porcentaje > 100) {
+          alert("El porcentaje debe estar entre 0 y 100.");
+          return;
+        }
+
+        if (calificacion < 0 || calificacion > 100) {
+          alert("La calificación debe estar entre 0 y 100.");
+          return;
+        }
+
+        const actividad = {
+          nombre: nombre,
+          porcentaje: porcentaje,
+          calificacion: calificacion,
+        };
+
+        actividades.push(actividad);
+        mostrarActividades();
+        calcularPromedio();
+        document.getElementById("nombreActividad").value = "";
+        document.getElementById("porcentajeActividad").value = "";
+        document.getElementById("calificacionActividad").value = "";
+      }
+
+      function mostrarActividades() {
+        const actividadesList = document.getElementById("actividadesList");
+        actividadesList.innerHTML = "";
+
+        actividades.forEach((actividad, index) => {
+          const actividadDiv = document.createElement("div");
+          actividadDiv.className = "actividad-item";
+          actividadDiv.innerHTML = `
+            <p><strong>Actividad:</strong> ${actividad.nombre}</p>
+            <p><strong>Porcentaje:</strong> ${actividad.porcentaje}%</p>
+            <p><strong>Calificación:</strong> ${actividad.calificacion}</p>
+            <button class="boton-borrar" onclick="borrarActividad(${index})">Borrar Actividad</button>
+            <hr>
+          `;
+          actividadesList.appendChild(actividadDiv);
+        });
+      }
+
+      function borrarActividad(index) {
+        actividades.splice(index, 1);
+        mostrarActividades();
+        calcularPromedio();
+      }
+
+      function calcularPromedio() {
+        let totalPorcentaje = 0;
+        let sumaPonderada = 0;
+
+        actividades.forEach((actividad) => {
+          sumaPonderada +=
+            (actividad.calificacion * actividad.porcentaje) / 100;
+          totalPorcentaje += actividad.porcentaje;
+        });
+
+        const promedioResultado = document.getElementById("promedioResultado");
+
+        if (totalPorcentaje === 0) {
+          promedioResultado.textContent = "No hay actividades calificadas.";
+          return;
+        }
+
+        const promedio = sumaPonderada / (totalPorcentaje / 100);
+        promedioResultado.textContent = `Promedio: ${promedio.toFixed(2)}`;
+      }
+
+      // tareas
+      function mostrarFormularioTarea() {
+        document.getElementById("formularioTarea").style.display = "block";
+      }
+
+      function agregarTarea() {
+        const taskName = document.getElementById("taskName").value;
+        const subTasks = document.getElementById("subTasks").value;
+        const taskHours = document.getElementById("taskHours").value;
+
+        if (taskName && subTasks && taskHours) {
+          const tarea = {
+            nombre: taskName,
+            subtareas: subTasks.split(","),
+            horas: taskHours,
+            realizada: false,
+          };
+
+          tareas.push(tarea);
+          mostrarTareas();
+          document.getElementById("taskName").value = "";
+          document.getElementById("subTasks").value = "";
+          document.getElementById("taskHours").value = "";
+        } else {
+          alert("Por favor, completa todos los campos de la tarea.");
+        }
+      }
+
+      function mostrarTareas() {
+        const tareasList = document.getElementById("tareasList");
+        tareasList.innerHTML = "";
+
+        tareas.forEach((tarea, index) => {
+          const tareaDiv = document.createElement("div");
+          tareaDiv.className = `tarea-item ${
+            tarea.realizada ? "finalizada" : ""
+          }`;
+          tareaDiv.innerHTML = `
+            <h3>Tarea ${index + 1}</h3>
+            <p><strong>Nombre:</strong> ${tarea.nombre}</p>
+            <p><strong>Subtareas:</strong> ${tarea.subtareas.join(", ")}</p>
+            <p><strong>Horas invertidas:</strong> ${tarea.horas}</p>
+            <button onclick="marcarTareaRealizada(${index})">
+              ${tarea.realizada ? "Desmarcar" : "Marcar como realizada"}
+            </button>
+            <button class="boton-borrar" onclick="borrarTarea(${index})">Borrar Tarea</button>
+            <hr>
+          `;
+          tareasList.appendChild(tareaDiv);
+        });
+      }
+
+      function marcarTareaRealizada(index) {
+        tareas[index].realizada = !tareas[index].realizada;
+        mostrarTareas();
+      }
+
+      function borrarTarea(index) {
+        tareas.splice(index, 1);
+        mostrarTareas();
+      }
+
+      // notas
+      function mostrarFormularioNota() {
+        document.getElementById("formularioNota").style.display = "block";
+      }
+
+      function agregarNota() {
+        const noteInput = document.getElementById("noteInput").value;
+
+        if (noteInput) {
+          const nota = {
+            contenido: noteInput,
+          };
+
+          notas.push(nota);
+          mostrarNotas();
+          document.getElementById("noteInput").value = "";
+        } else {
+          alert("Por favor, escribe una nota.");
+        }
+      }
+
+      function mostrarNotas() {
+        const notasList = document.getElementById("notasList");
+        notasList.innerHTML = "";
+
+        notas.forEach((nota, index) => {
+          const notaDiv = document.createElement("div");
+          notaDiv.className = "nota-item";
+          notaDiv.innerHTML = `
+            <h3>Nota ${index + 1}</h3>
+            <p>${nota.contenido}</p>
+            <button class="boton-borrar" onclick="borrarNota(${index})">Borrar Nota</button>
+            <hr>
+          `;
+          notasList.appendChild(notaDiv);
+        });
+      }
+
+      function borrarNota(index) {
+        notas.splice(index, 1);
+        mostrarNotas();
+      }
+
+      // evaluaciones
+      function mostrarFormularioEvaluacion() {
+        document.getElementById("formularioEvaluacion").style.display = "block";
+      }
+
+      function agregarEvaluacion() {
+        const tipoEvaluacion = document.getElementById("tipoEvaluacion").value;
+        const fechaEvaluacion =
+          document.getElementById("fechaEvaluacion").value;
+        const descripcionTemas =
+          document.getElementById("descripcionTemas").value;
+
+        if (tipoEvaluacion && fechaEvaluacion && descripcionTemas) {
+          const evaluacion = {
+            tipo: tipoEvaluacion,
+            fecha: fechaEvaluacion,
+            temas: descripcionTemas,
+            finalizada: false,
+          };
+
+          evaluaciones.push(evaluacion);
+          mostrarEvaluaciones();
+          document.getElementById("tipoEvaluacion").value = "parcial";
+          document.getElementById("fechaEvaluacion").value = "";
+          document.getElementById("descripcionTemas").value = "";
+        } else {
+          alert("Por favor, completa todos los campos de la evaluación.");
+        }
+      }
+
+      function mostrarEvaluaciones() {
+        const evaluacionesList = document.getElementById("evaluacionesList");
+        evaluacionesList.innerHTML = "";
+
+        evaluaciones.forEach((evaluacion, index) => {
+          const evaluacionDiv = document.createElement("div");
+          evaluacionDiv.className = `evaluacion-item ${
+            evaluacion.finalizada ? "finalizada" : ""
+          }`;
+          evaluacionDiv.innerHTML = `
+            <h3>Evaluación ${index + 1}</h3>
+            <p><strong>Tipo:</strong> ${evaluacion.tipo}</p>
+            <p><strong>Fecha:</strong> ${evaluacion.fecha}</p>
+            <p><strong>Temas:</strong> ${evaluacion.temas}</p>
+            <button onclick="marcarFinalizada(${index})">
+              ${evaluacion.finalizada ? "Desmarcar" : "Marcar como finalizada"}
+            </button>
+            <button class="boton-borrar" onclick="borrarEvaluacion(${index})">Borrar Evaluación</button>
+            <hr>
+          `;
+          evaluacionesList.appendChild(evaluacionDiv);
+        });
+      }
+
+      function marcarFinalizada(index) {
+        evaluaciones[index].finalizada = !evaluaciones[index].finalizada;
+        mostrarEvaluaciones();
+      }
+
+      function borrarEvaluacion(index) {
+        evaluaciones.splice(index, 1);
+        mostrarEvaluaciones();
+      }
+
+      function regresarInicio() {
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
