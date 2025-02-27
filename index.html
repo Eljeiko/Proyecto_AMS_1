@@ -30,7 +30,7 @@
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link" href="index.html">Inicio</a>
           <a class="mdl-navigation__link" href="tareasExternas.html">Tareas Externas</a>
-          <a class="mdl-navigation__link" href="notas.html">Notas Rápidas</a>
+          <a class="mdl-navigation__link" href="notasRapidas.html">Notas Rápidas</a>
         </nav>
       </div>
     
@@ -237,8 +237,8 @@
         let taskHours = document.getElementById("taskHours").value.trim();
 
         if (!taskName) {
-          alert("Por favor, ingresa un nombre para la tarea.");
-          return;
+            alert("Por favor, ingresa un nombre para la tarea.");
+            return;
         }
 
         let newTask = { name: taskName, subTasks: subTasks, hours: taskHours };
@@ -254,7 +254,9 @@
         document.getElementById("taskName").value = "";
         document.getElementById("subTasks").value = "";
         document.getElementById("taskHours").value = "";
-      }
+
+        alert("Tarea agregada con éxito!");
+    }
 
       function displayTasks() {
         let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
