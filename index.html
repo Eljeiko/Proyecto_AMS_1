@@ -6,160 +6,102 @@
     <title>Organizador Estudiantil</title>
     <link rel="stylesheet" href="styles.css" />
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <style>
-      .menu-container {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 15px;
-      }
-
-      .menu-button {
-        background-color: #da1212;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-      }
-
-      .menu-list {
-        display: none;
-        position: absolute;
-        background-color: white;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        min-width: 150px;
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-      }
-
-      .menu-list a {
-        display: block;
-        padding: 10px;
-        text-decoration: none;
-        color: black;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .menu-list a:hover {
-        background-color: #f1f1f1;
-      }
-
-      .show {
-        display: block;
-      }
-    </style>
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+  <link
+    rel="stylesheet"
+    href="https://code.getmdl.io/1.3.0/material.min.css"
+  />
+  
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   </head>
 
   <body>
-    <div class="container">
-      <h1 style="font-family: sans-serif">Organizador Estudiantil</h1>
-
-      <!-- Menú desplegable -->
-      <div class="menu-container">
-        <button class="menu-button" onclick="toggleMenu()">☰ Menú</button>
-        <div class="menu-list" id="menuList">
-          <a href="index.html">Inicio</a>
-          <a href="tareasExternas.html">Tareas Externas</a>
-          <a href="notas.html">Notas Rápidas</a>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">ORGANIZADOR ESTUDIANTIL</span>
+        </div>   
+      </header>
+    
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Menú</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="index.html">Inicio</a>
+          <a class="mdl-navigation__link" href="tareasExternas.html">Tareas Externas</a>
+          <a class="mdl-navigation__link" href="notas.html">Notas Rápidas</a>
+        </nav>
+      </div>
+    
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <!-- Sección de Tareas -->
+          <div class="section">
+            <h2>Tareas Externas</h2>
+            <input type="text" id="taskName" placeholder="Nombre de la tarea..." />
+            <input type="text" id="subTasks" placeholder="Subtareas (separadas por comas)..." />
+            <input type="number" id="taskHours" placeholder="Horas invertidas..." />
+            <button onclick="addTask()">Agregar Tarea</button>
+            <button onclick="limpiarTareas()">Borrar Las Tareas Guardadas</button>
+            <div id="tasksList"></div>
+          </div>
+      
+          <!-- Sección de Notas -->
+          <div class="section">
+            <h2>Notas Rápidas</h2>
+            <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
+            <button onclick="addNote()">Agregar Nota</button>
+            <div id="notesList"></div>
+          </div>
+      
+          <!-- Sección de Crear Clase -->
+          <div class="section">
+            <h2>Crear Clase</h2>
+            <input type="text" id="className" placeholder="Nombre de la materia..." />
+            <input type="text" id="classTeacher" placeholder="Nombre del docente..." />
+            <button onclick="createClass()">Crear Clase</button>
+            <button onclick="limpiarClases()">Borrar Clases Anteriores</button>
+          </div>
+      
+          <h2>Clases Creadas</h2>
+          <div id="clases-container"></div>
+      
+          <!-- Sección Pomodoro -->
+          <div class="section">
+            <h2>Temporizador Pomodoro</h2>
+            <label>Tiempo de trabajo (min):
+              <input type="number" id="workTime" value="25" />
+            </label>
+            <label>Tiempo de descanso (min):
+              <input type="number" id="breakTime" value="5" />
+            </label>
+            <p id="timerDisplay">25:00</p>
+            <button onclick="startPomodoro()">Iniciar</button>
+            <button onclick="pausePomodoro()">Pausar</button>
+            <button onclick="resetPomodoro()">Reiniciar</button>
+          </div>
+      
+          <!-- Reproductor de Spotify -->
+          <div class="section">
+            <h2>Reproductor de Música</h2>
+            <div class="spotify-player">
+              <iframe id="spotify-embed" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+                width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">
+              </iframe>
+            </div>
+          </div>
+      
+          <!-- Sección de Calendario -->
+          <div class="section">
+            <h2>Calendario</h2>
+            <iframe src="https://calendar.google.com/calendar/embed?src=es-419%23week%40group.v.calendar.google.com&ctz=America%2FMexico_City"
+              style="border: 0" width="100%" height="600" frameborder="0" scrolling="no">
+            </iframe>
+          </div>
         </div>
-      </div>
-
-      <!-- Sección de Tareas -->
-      <div class="section">
-        <h2>Tareas Externas</h2>
-        <input type="text" id="taskName" placeholder="Nombre de la tarea..." />
-        <input
-          type="text"
-          id="subTasks"
-          placeholder="Subtareas (separadas por comas)..."
-        />
-        <input type="number" id="taskHours" placeholder="Horas invertidas..." />
-        <button onclick="addTask()">Agregar Tarea</button>
-        <button onclick="limpiarTareas()">Borrar Las Tareas Guardadas</button>
-        <div id="tasksList"></div>
-      </div>
-
-      <!-- Sección de Notas -->
-      <div class="section">
-        <h2>Notas Rápidas</h2>
-        <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
-        <button onclick="addNote()">Agregar Nota</button>
-        <div id="notesList"></div>
-      </div>
-
-      <!-- Sección de Crear Clase -->
-      <div class="section">
-        <h2>Crear Clase</h2>
-        <input
-          type="text"
-          id="className"
-          placeholder="Nombre de la materia..."
-        />
-        <input
-          type="text"
-          id="classTeacher"
-          placeholder="Nombre del docente..."
-        />
-        <button onclick="createClass()">Crear Clase</button>
-        <button onclick="limpiarClases()">Borrar Clases Anteriores</button>
-      </div>
-
-      <h2>Clases Creadas</h2>
-      <div id="clases-container"></div>
-
-      <!-- Sección Pomodoro -->
-      <div class="section">
-        <h2>Temporizador Pomodoro</h2>
-        <label
-          >Tiempo de trabajo (min):
-          <input type="number" id="workTime" value="25"
-        /></label>
-        <label
-          >Tiempo de descanso (min):
-          <input type="number" id="breakTime" value="5"
-        /></label>
-        <p id="timerDisplay">25:00</p>
-        <button onclick="startPomodoro()">Iniciar</button>
-        <button onclick="pausePomodoro()">Pausar</button>
-        <button onclick="resetPomodoro()">Reiniciar</button>
-      </div>
-
-      <!-- Reproductor de Spotify -->
-      <div class="section">
-        <h2>Reproductor de Música</h2>
-        <div class="spotify-player">
-          <iframe
-            id="spotify-embed"
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-            width="100%"
-            height="380"
-            frameborder="0"
-            allowtransparency="true"
-            allow="encrypted-media"
-          >
-          </iframe>
-        </div>
-      </div>
-
-      <!-- Sección de Calendario -->
-      <div class="section">
-        <h2>Calendario</h2>
-        <iframe
-          src="https://calendar.google.com/calendar/embed?src=es-419%23week%40group.v.calendar.google.com&ctz=America%2FMexico_City"
-          style="border: 0"
-          width="100%"
-          height="600"
-          frameborder="0"
-          scrolling="no"
-        >
-        </iframe>
-      </div>
-    </div>
+      </main>
+      
 
     <script>
       let pomodoroTimer;
@@ -275,11 +217,6 @@
         localStorage.removeItem("clases");
         document.getElementById("clases-container").innerHTML = "";
         alert("¡Las clases guardadas han sido eliminadas!");
-      }
-
-      <!-- Menú desplegable -->
-      function toggleMenu() {
-        document.getElementById("menuList").classList.toggle("show");
       }
 
       window.onclick = function (event) {
