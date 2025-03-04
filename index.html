@@ -346,6 +346,95 @@
         document.getElementById("notaMateria").value = "";
     }
 
+    function agregarMateria() {
+        let materia = document.getElementById("materiaInput").value.trim();
+        let creditos = parseFloat(document.getElementById("creditosInput").value);
+        let nota = parseFloat(document.getElementById("notaInput").value);
+
+        if (!materia || isNaN(creditos) || isNaN(nota)) {
+          alert("Por favor, completa todos los campos correctamente.");
+          return;
+        }
+
+        let nuevaMateria = {
+          nombre: materia,
+          creditos: creditos,
+          nota: nota,
+        };
+
+        let materias = JSON.parse(localStorage.getItem("materias")) || [];
+        materias.push(nuevaMateria);
+        localStorage.setItem("materias", JSON.stringify(materias));
+
+        document.getElementById("materiaInput").value = "";
+        document.getElementById("creditosInput").value = "";
+        document.getElementById("notaInput").value = "";
+
+        mostrarMaterias();
+      }
+
+      function mostrarMaterias() {
+        let materias = JSON.parse(localStorage.getItem("materias")) || [];
+        let materiasContainer = document.getElementById("materiasContainer");
+
+        materiasContainer.innerHTML = "";
+
+        if (materias.length === 0) {
+          materiasContainer.innerHTML = "<p>No hay materias agregadas.</p>";
+          return;
+        }
+
+        materias.forEach((materia, index) => {
+          let materiaItem = document.createElement("div");
+          materiaItem.innerHTML = `
+            <p><strong>${materia.nombre}</strong> - Créditos: ${materia.creditos}, Nota: ${materia.nota}</p>
+            <button onclick="eliminarMateria(${index})">Eliminar</button>
+          `;
+          materiasContainer.appendChild(materiaItem);
+        });
+      }
+
+      function eliminarMateria(index) {
+        let materias = JSON.parse(localStorage.getItem("materias")) || [];
+        materias.splice(index, 1);
+        localStorage.setItem("materias", JSON.stringify(materias));
+        mostrarMaterias();
+      }
+
+      function calcularPromedio() {
+        let materias = JSON.parse(localStorage.getItem("materias")) || [];
+
+        if (materias.length === 0) {
+          alert("No hay materias para calcular el promedio.");
+          return;
+        }
+
+        let totalCreditos = 0;
+        let sumaPonderada = 0;
+
+        materias.forEach((materia) => {
+          totalCreditos += materia.creditos;
+          sumaPonderada += materia.creditos * materia.nota;
+        });
+
+        let promedio = sumaPonderada / totalCreditos;
+        document.getElementById("resultadoPromedio").innerHTML = `
+          <p><strong>Promedio ponderado:</strong> ${promedio.toFixed(2)}</p>
+        `;
+      }
+
+      function limpiarMaterias() {
+        localStorage.removeItem("materias");
+        mostrarMaterias();
+        document.getElementById("resultadoPromedio").innerHTML = "";
+        alert("Todas las materias han sido eliminadas.");
+      }
+
+      // Cargar materias al inicio
+      document.addEventListener("DOMContentLoaded", function () {
+        mostrarMaterias();
+      });
+
   </script>
   </body>
 </html>
