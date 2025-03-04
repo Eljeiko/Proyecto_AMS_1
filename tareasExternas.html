@@ -36,24 +36,35 @@
     
       <main class="mdl-layout__content">
         <div class="page-content">
+            <h2>Tareas Externas</h2>
+            <ul id="externalTasksList"></ul> <!-- Aquí se mostrarán las tareas -->
+    
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-            let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
-            let taskList = document.getElementById("externalTasksList");
-            taskList.innerHTML = ""; // Limpiar la lista antes de agregar nuevas tareas
 
-            if (tasks.length === 0) {
-                taskList.innerHTML = "<li>No hay tareas externas guardadas.</li>";
-                return;
-            }
-
-            tasks.forEach((task) => {
-                let listItem = document.createElement("li");
-                listItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
-                taskList.appendChild(listItem);
-            });
-        });
-    </script>
+                  let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
+                  let taskList = document.getElementById("externalTasksList");
+                  // Verificar si el elemento existe antes de intentar modificarlo
+                  if (!taskList) {
+                      console.error("Elemento con ID 'externalTasksList' no encontrado.");
+                      return;
+                    }
+                    taskList.innerHTML = ""; // Limpiar la lista antes de agregar nuevas tareas
+    
+                    if (tasks.length === 0) {
+                        taskList.innerHTML = "<li>No hay tareas externas guardadas.</li>";
+                        return;
+                    }
+    
+                  tasks.forEach((task) => {
+                  let listItem = document.createElement("li");
+                  listItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
+                  taskList.appendChild(listItem);
+                  });
+                });
+            </script>
+        </div>
+    </main>    
   </body>
 </html>

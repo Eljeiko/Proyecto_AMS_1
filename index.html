@@ -258,33 +258,34 @@
         alert("Tarea agregada con éxito!");
     }
 
-      function displayTasks() {
+    // Función corregida para mostrar tareas en la página principal
+    function displayTasks() {
         let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
         let tasksListDiv = document.getElementById("tasksList");
 
         // Limpiar lista antes de actualizar
         tasksListDiv.innerHTML = "";
 
+        if (tasks.length === 0) {
+            tasksListDiv.innerHTML = "<p>No hay tareas guardadas.</p>";
+            return;
+        }
+
         // Mostrar cada tarea en la lista
         tasks.forEach((task) => {
-          let taskItem = document.createElement("div");
-          taskItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
-          tasksListDiv.appendChild(taskItem);
+            let taskItem = document.createElement("div");
+            taskItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
+            tasksListDiv.appendChild(taskItem);
         });
-      }
+    }
+    
 
-      // Mostrar tareas al cargar la página
-      document.addEventListener("DOMContentLoaded", displayTasks);
-
-      function displayTasks() {
-        // Cargar tareas solo de la clave específica para la página externa
-        let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
-        let tasksListDiv = document.getElementById("tasksList");
-      }
-      function limpiarTareas() {
+    function limpiarTareas() {
         localStorage.removeItem("externalTasks");
         alert("Tareas externas eliminadas.");
-      }
+        displayTasks(); // Actualizar la lista después de borrar
+    }
+
     </script>
   </body>
 </html>
