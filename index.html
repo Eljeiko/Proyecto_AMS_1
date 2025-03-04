@@ -71,6 +71,21 @@
           <h2>Clases Creadas</h2>
           <div id="clases-container"></div>
       
+          <!-- Calculadora de Promedio Semestral -->
+          <div class="section">
+            <h2>Calculadora de Promedio Semestral</h2>
+            <div>
+              <input type="text" id="materiaInput" placeholder="Nombre de la materia" />
+              <input type="number" id="creditosInput" placeholder="Créditos" min="1" max="10" />
+              <input type="number" id="notaInput" placeholder="Nota (0-10)" min="0" max="10" step="0.1" />
+              <button onclick="agregarMateria()">Agregar Materia</button>
+              <button onclick="calcularPromedio()">Calcular Promedio</button>
+              <button onclick="limpiarMaterias()">Limpiar</button>
+            </div>
+            <div id="materiasContainer"></div>
+            <div id="resultadoPromedio"></div>
+          </div>
+                
           <!-- Sección Pomodoro -->
           <div class="section">
             <h2>Temporizador Pomodoro</h2>
