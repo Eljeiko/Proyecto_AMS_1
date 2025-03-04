@@ -49,10 +49,14 @@
       
           <!-- Sección de Notas -->
           <div class="section">
-            <h2>Notas Rápidas</h2>
-            <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
-            <button onclick="addNote()">Agregar Nota</button>
-            <div id="notesList"></div>
+            <h2>Agregar Nota</h2>
+            <input type="text" id="notaTexto" placeholder="Escribe tu nota...">
+            <input type="date" id="notaFecha">
+            <select id="notaMateria">
+              <option value="">Selecciona una materia</option>
+            </select>
+            <button onclick="agregarNota()">Agregar Nota</button>
+            
           </div>
       
           <!-- Sección de Crear Clase -->
@@ -278,7 +282,7 @@
             tasksListDiv.appendChild(taskItem);
         });
     }
-    
+
 
     function limpiarTareas() {
         localStorage.removeItem("externalTasks");
@@ -286,6 +290,47 @@
         displayTasks(); // Actualizar la lista después de borrar
     }
 
-    </script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Cargar materias guardadas en localStorage
+    let materias = JSON.parse(localStorage.getItem("clases")) || [];
+    let selectMateria = document.getElementById("notaMateria");
+
+    // Agregar materias al select si existen
+    if (materias.length > 0) {
+        materias.forEach(clase => {
+            let option = document.createElement("option");
+            option.value = clase.nombre;
+            option.textContent = clase.nombre;
+            selectMateria.appendChild(option);
+        });
+    }
+});
+
+    function agregarNota() {
+        let texto = document.getElementById("notaTexto").value.trim();
+        let fecha = document.getElementById("notaFecha").value;
+        let materia = document.getElementById("notaMateria").value;
+
+        if (!texto || !fecha || !materia) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
+        let nuevaNota = { texto, fecha, materia, completada: true };
+
+        // Guardar en localStorage
+        let notas = JSON.parse(localStorage.getItem("notas")) || [];
+        notas.push(nuevaNota);
+        localStorage.setItem("notas", JSON.stringify(notas));
+
+        alert("Nota agregada con éxito!");
+        
+        // Limpiar los campos
+        document.getElementById("notaTexto").value = "";
+        document.getElementById("notaFecha").value = "";
+        document.getElementById("notaMateria").value = "";
+    }
+
+  </script>
   </body>
 </html>

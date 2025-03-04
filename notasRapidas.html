@@ -36,3 +36,53 @@
     
       <main class="mdl-layout__content">
         <div class="page-content">
+
+          <h2>Notas Guardadas</h2>
+<div id="notasGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+    <!-- Aquí se cargarán las notas -->
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let notas = JSON.parse(localStorage.getItem("notas")) || [];
+    let notasGrid = document.getElementById("notasGrid");
+
+    if (notas.length === 0) {
+        notasGrid.innerHTML = "<p>No hay notas guardadas.</p>";
+        return;
+    }
+
+    notas.forEach((nota) => {
+        let card = document.createElement("div");
+        card.style.border = "1px solid #ccc";
+        card.style.padding = "10px";
+        card.style.borderRadius = "5px";
+        card.style.backgroundColor = "#f9f9f9";
+
+
+        //checkbox
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = !nota.pendiente;  // ✅ Si no está pendiente, se marca
+        checkbox.addEventListener("change", function () {
+            notas[index].pendiente = !checkbox.checked;
+            localStorage.setItem("notas", JSON.stringify(notas));
+        });
+
+        card.innerHTML = `
+            <p><strong>📌 ${nota.texto}</strong></p>
+            <p>📅<strong> Fecha: </strong> ${new Date(nota.fecha).toLocaleDateString()}</p>
+            <p><strong> Materia: </strong> ${nota.materia}</p>
+        `;
+        // Agregar el checkbox y texto de estado
+        let estado = document.createElement("label");
+        estado.textContent = " Completada";
+        card.appendChild(checkbox);
+        card.appendChild(estado);
+
+        notasGrid.appendChild(card);
+    });
+});
+</script>
+
+  </body>
