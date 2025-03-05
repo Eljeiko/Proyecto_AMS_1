@@ -37,34 +37,56 @@
       <main class="mdl-layout__content">
         <div class="page-content">
             <h2>Tareas Externas</h2>
-            <ul id="externalTasksList"></ul> <!-- Aquí se mostrarán las tareas -->
-    
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-
-
-                  let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
-                  let taskList = document.getElementById("externalTasksList");
-                  // Verificar si el elemento existe antes de intentar modificarlo
-                  if (!taskList) {
-                      console.error("Elemento con ID 'externalTasksList' no encontrado.");
-                      return;
-                    }
-                    taskList.innerHTML = ""; // Limpiar la lista antes de agregar nuevas tareas
-    
-                    if (tasks.length === 0) {
-                        taskList.innerHTML = "<li>No hay tareas externas guardadas.</li>";
-                        return;
-                    }
-    
-                  tasks.forEach((task) => {
-                  let listItem = document.createElement("li");
-                  listItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
-                  taskList.appendChild(listItem);
-                  });
-                });
-            </script>
+            <div id="tasksList"></div> <!-- Asegúrate de que este div esté en tu HTML -->
         </div>
+    </main>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let tareas = JSON.parse(localStorage.getItem("externalTasks")) || [];
+        let tasksList = document.getElementById("tasksList");
+    
+        if (!tasksList) return; // No hacer nada si no estamos en la página correcta
+    
+        if (tareas.length === 0) {
+            tasksList.innerHTML = "<p>No hay tareas guardadas.</p>";
+            return;
+        }
+    
+        tareas.forEach((tarea, index) => {
+            let card = document.createElement("div");
+            card.style.border = "1px solid #ccc";
+            card.style.padding = "10px";
+            card.style.borderRadius = "5px";
+            card.style.backgroundColor = "#f9f9f9";
+            card.style.marginBottom = "10px";
+    
+            // Checkbox
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = !tarea.pendiente;
+            checkbox.addEventListener("change", function () {
+                tareas[index].pendiente = !checkbox.checked;
+                localStorage.setItem("externalTasks", JSON.stringify(tareas));
+            });
+    
+            // Contenido de la tarjeta
+            card.innerHTML = `
+                <p><strong>📌 ${tarea.name}</strong></p>
+                <p>📅<strong> Fecha: </strong> ${tarea.subTasks}</p>
+                <p><strong> Horas: </strong> ${tarea.hours} horas</p>
+            `;
+    
+            // Agregar checkbox y texto de estado
+            let estado = document.createElement("label");
+            estado.textContent = " Completada";
+            card.appendChild(checkbox);
+            card.appendChild(estado);
+    
+            tasksList.appendChild(card);
+        });
+    });
+    </script>
     </main>    
   </body>
 </html>

@@ -266,33 +266,34 @@
       };
 
       function addTask() {
-        let taskName = document.getElementById("taskName").value.trim();
-        let subTasks = document.getElementById("subTasks").value.trim();
-        let taskHours = document.getElementById("taskHours").value.trim();
+    let taskName = document.getElementById("taskName").value.trim();
+    let subTasks = document.getElementById("subTasks").value.trim();
+    let taskHours = document.getElementById("taskHours").value.trim();
 
-        if (!taskName) {
-            alert("Por favor, ingresa un nombre para la tarea.");
-            return;
-        }
-
-        let newTask = { name: taskName, subTasks: subTasks, hours: taskHours };
-
-        // Obtener tareas previas de localStorage
-        let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
-        tasks.push(newTask);
-
-        // Guardar nuevamente en localStorage
-        localStorage.setItem("externalTasks", JSON.stringify(tasks));
-
-        // Limpiar los campos después de agregar la tarea
-        document.getElementById("taskName").value = "";
-        document.getElementById("subTasks").value = "";
-        document.getElementById("taskHours").value = "";
-
-        alert("Tarea agregada con éxito!");
+    if (!taskName) {
+        alert("Por favor, ingresa un nombre para la tarea.");
+        return;
     }
 
-    // Función corregida para mostrar tareas en la página principal
+    let newTask = { name: taskName, subTasks: subTasks, hours: taskHours, pendiente: true };
+
+    // Obtener tareas previas de localStorage
+    let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
+    tasks.push(newTask);
+
+    // Guardar nuevamente en localStorage
+    localStorage.setItem("externalTasks", JSON.stringify(tasks));
+
+    // Limpiar los campos después de agregar la tarea
+    document.getElementById("taskName").value = "";
+    document.getElementById("subTasks").value = "";
+    document.getElementById("taskHours").value = "";
+
+    alert("Tarea agregada con éxito!");
+
+    // No ejecutamos displayTasks() aquí para evitar mostrar tareas en index.html
+}
+
     function displayTasks() {
         let tasks = JSON.parse(localStorage.getItem("externalTasks")) || [];
         let tasksListDiv = document.getElementById("tasksList");
@@ -306,12 +307,41 @@
         }
 
         // Mostrar cada tarea en la lista
-        tasks.forEach((task) => {
+        tasks.forEach((task, index) => {
             let taskItem = document.createElement("div");
-            taskItem.innerHTML = `<strong>${task.name}</strong> - ${task.subTasks} (${task.hours} horas)`;
+            taskItem.style.border = "1px solid #ccc";
+            taskItem.style.padding = "10px";
+            taskItem.style.borderRadius = "5px";
+            taskItem.style.backgroundColor = "#f9f9f9";
+            taskItem.style.marginBottom = "10px";
+
+            // Checkbox
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = !task.pendiente;
+            checkbox.addEventListener("change", function () {
+                tasks[index].pendiente = !checkbox.checked;
+                localStorage.setItem("externalTasks", JSON.stringify(tasks));
+            });
+
+            // Agregar contenido
+            taskItem.innerHTML = `
+                <p><strong>📌 ${task.name}</strong></p>
+                <p>📅<strong> Fecha: </strong> ${task.subTasks}</p>
+                <p><strong> Horas: </strong> ${task.hours} horas</p>
+            `;
+
+            // Agregar checkbox y texto de estado
+            let estado = document.createElement("label");
+            estado.textContent = " Completada";
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(estado);
+
             tasksListDiv.appendChild(taskItem);
         });
-    }
+}
+
+
 
 
     function limpiarTareas() {
