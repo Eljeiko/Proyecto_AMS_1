@@ -33,73 +33,91 @@
           <a class="mdl-navigation__link" href="notasRapidas.html">Notas Rápidas</a>
         </nav>
       </div>
+    </div>
     
-      <main class="mdl-layout__content">
-        <div class="page-content">
+      <main class="mainPg">
+        <div class="content">
           <!-- Sección de Tareas -->
-          <div class="section">
+          <div class="tasksList">
+            <div class="section"> 
             <h2>Tareas Externas</h2>
             <input type="text" id="taskName" placeholder="Nombre de la tarea..." />
             <input type="text" id="subTasks" placeholder="Subtareas (separadas por comas)..." />
             <input type="number" id="taskHours" placeholder="Horas invertidas..." />
             <button onclick="addTask()">Agregar Tarea</button>
             <button onclick="limpiarTareas()">Borrar Las Tareas Guardadas</button>
-            <div id="tasksList"></div>
+            </div>
           </div>
+            
+          
       
           <!-- Sección de Notas -->
-          <div class="section">
-            <h2>Notas Rápidas</h2>
-            <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
-            <button onclick="addNote()">Agregar Nota</button>
-            <div id="notesList"></div>
+          <div class="notesList">
+            <div class="section">       
+              <h2>Notas Rápidas</h2>
+              <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
+              <button onclick="addNote()">Agregar Nota</button>
+            </div>
           </div>
       
           <!-- Sección de Crear Clase -->
-          <div class="section">
-            <h2>Crear Clase</h2>
-            <input type="text" id="className" placeholder="Nombre de la materia..." />
-            <input type="text" id="classTeacher" placeholder="Nombre del docente..." />
-            <button onclick="createClass()">Crear Clase</button>
-            <button onclick="limpiarClases()">Borrar Clases Anteriores</button>
+          <div class="createClass">
+            <div class="section">
+              <h2>Crear Clase</h2>
+              <input type="text" id="className" placeholder="Nombre de la materia..." />
+              <input type="text" id="classTeacher" placeholder="Nombre del docente..." />
+              <button onclick="createClass()">Crear Clase</button>
+              <button onclick="limpiarClases()">Borrar Clases Anteriores</button>
+            </div>
+          </div>
+
+          <div class="clases-container">
+            <div class="section">
+              <h2>Clases Creadas</h2>
+            </div>
           </div>
       
-          <h2>Clases Creadas</h2>
-          <div id="clases-container"></div>
-      
           <!-- Sección Pomodoro -->
-          <div class="section">
-            <h2>Temporizador Pomodoro</h2>
-            <label>Tiempo de trabajo (min):
+          <div class="temp">
+            <div class="section">
+            
+              <h2>Temporizador Pomodoro</h2>
+              <label>Tiempo de trabajo (min):
               <input type="number" id="workTime" value="25" />
-            </label>
-            <label>Tiempo de descanso (min):
+              </label>
+              <label>Tiempo de descanso (min):
               <input type="number" id="breakTime" value="5" />
-            </label>
-            <p id="timerDisplay">25:00</p>
-            <button onclick="startPomodoro()">Iniciar</button>
-            <button onclick="pausePomodoro()">Pausar</button>
-            <button onclick="resetPomodoro()">Reiniciar</button>
+              </label>
+              <p id="timerDisplay">25:00</p>
+              <button onclick="startPomodoro()">Iniciar</button>
+              <button onclick="pausePomodoro()">Pausar</button>
+              <button onclick="resetPomodoro()">Reiniciar</button>
+            </div>
+            
           </div>
       
           <!-- Reproductor de Spotify -->
-          <div class="section">
-            <h2>Reproductor de Música</h2>
-            <div class="spotify-player">
+          <div class="spotify-player">
+            <div class="section">
+              <h2>Reproductor</h2>
               <iframe id="spotify-embed" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-                width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">
+                width="100%" height="380px" frameborder="0" allowtransparency="true" allow="encrypted-media">
               </iframe>
             </div>
           </div>
       
           <!-- Sección de Calendario -->
-          <div class="section">
-            <h2>Calendario</h2>
-            <iframe src="https://calendar.google.com/calendar/embed?src=es-419%23week%40group.v.calendar.google.com&ctz=America%2FMexico_City"
+          <div class="calendar">
+            <div class="section">
+              <h2>Calendario</h2>
+              <iframe src="https://calendar.google.com/calendar/embed?src=es-419%23week%40group.v.calendar.google.com&ctz=America%2FMexico_City"
               style="border: 0" width="100%" height="600" frameborder="0" scrolling="no">
             </iframe>
           </div>
+           
+            
         </div>
+
       </main>
       
 
