@@ -71,6 +71,21 @@
           <h2>Clases Creadas</h2>
           <div id="clases-container"></div>
       
+         <!-- Sección de Metas -->
+         <div class="section">
+          <h2>Establecer Metas</h2>
+          <input type="text" id="metaTitulo" placeholder="Título de la meta" />
+          <textarea id="metaDescripcion" placeholder="Descripción de la meta"></textarea>
+          <input type="date" id="metaFechaLimite" />
+          <select id="metaCategoria">
+            <option value="academica">Académica</option>
+            <option value="bienestar">Bienestar Personal</option>
+          </select>
+          <button onclick="crearMeta()">Crear Meta</button>
+          <button onclick="limpiarMetas()">Limpiar Todas las Metas</button>
+          <div id="listaMetas"></div>
+        </div>
+
           <!-- Calculadora de Promedio Semestral -->
           <div class="section">
             <h2>Calculadora de Promedio Semestral</h2>
@@ -430,8 +445,95 @@
         alert("Todas las materias han sido eliminadas.");
       }
 
-      // Cargar materias al inicio
       document.addEventListener("DOMContentLoaded", function () {
+        mostrarMaterias();
+      });
+
+      // Código para las metas
+      function crearMeta() {
+        const titulo = document.getElementById("metaTitulo").value.trim();
+        const descripcion = document.getElementById("metaDescripcion").value.trim();
+        const fechaLimite = document.getElementById("metaFechaLimite").value;
+        const categoria = document.getElementById("metaCategoria").value;
+
+        if (!titulo || !fechaLimite) {
+          alert("Por favor, completa el título y la fecha límite.");
+          return;
+        }
+
+        const nuevaMeta = {
+          id: Date.now(),
+          titulo,
+          descripcion,
+          fechaLimite,
+          categoria,
+          completada: false,
+        };
+
+        const metas = JSON.parse(localStorage.getItem("metas")) || [];
+        metas.push(nuevaMeta);
+        localStorage.setItem("metas", JSON.stringify(metas));
+
+        document.getElementById("metaTitulo").value = "";
+        document.getElementById("metaDescripcion").value = "";
+        document.getElementById("metaFechaLimite").value = "";
+
+        mostrarMetas();
+      }
+
+      function mostrarMetas() {
+        const metas = JSON.parse(localStorage.getItem("metas")) || [];
+        const listaMetas = document.getElementById("listaMetas");
+
+        listaMetas.innerHTML = "";
+
+        if (metas.length === 0) {
+          listaMetas.innerHTML = "<p>No hay metas establecidas.</p>";
+          return;
+        }
+
+        metas.forEach((meta) => {
+          const metaItem = document.createElement("div");
+          metaItem.innerHTML = `
+            <h3>${meta.titulo}</h3>
+            <p><strong>Descripción:</strong> ${meta.descripcion}</p>
+            <p><strong>Fecha Límite:</strong> ${meta.fechaLimite}</p>
+            <p><strong>Categoría:</strong> ${meta.categoria === "academica" ? "Académica" : "Bienestar Personal"}</p>
+            <p><strong>Estado:</strong> ${meta.completada ? "Completada" : "Pendiente"}</p>
+            <button onclick="marcarMetaComoCompletada(${meta.id})">${meta.completada ? "Desmarcar" : "Completar"}</button>
+            <button onclick="eliminarMeta(${meta.id})">Eliminar</button>
+          `;
+          listaMetas.appendChild(metaItem);
+        });
+      }
+
+      function marcarMetaComoCompletada(id) {
+        const metas = JSON.parse(localStorage.getItem("metas")) || [];
+        const metaIndex = metas.findIndex((meta) => meta.id === id);
+
+        if (metaIndex !== -1) {
+          metas[metaIndex].completada = !metas[metaIndex].completada;
+          localStorage.setItem("metas", JSON.stringify(metas));
+          mostrarMetas();
+        }
+      }
+
+      function eliminarMeta(id) {
+        let metas = JSON.parse(localStorage.getItem("metas")) || [];
+        metas = metas.filter((meta) => meta.id !== id);
+        localStorage.setItem("metas", JSON.stringify(metas));
+        mostrarMetas();
+      }
+
+      function limpiarMetas() {
+        localStorage.removeItem("metas");
+        mostrarMetas();
+        alert("Todas las metas han sido eliminadas.");
+      }
+
+      // Cargar metas al inicio
+      document.addEventListener("DOMContentLoaded", function () {
+        mostrarMetas();
         mostrarMaterias();
       });
 
