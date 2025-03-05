@@ -51,7 +51,6 @@
           <div class="section">
             <h2>Agregar Nota</h2>
             <input type="text" id="notaTexto" placeholder="Escribe tu nota...">
-            <input type="date" id="notaFecha">
             <select id="notaMateria">
               <option value="">Selecciona una materia</option>
             </select>
@@ -341,9 +340,6 @@
         });
 }
 
-
-
-
     function limpiarTareas() {
         localStorage.removeItem("externalTasks");
         alert("Tareas externas eliminadas.");
@@ -368,15 +364,14 @@
 
     function agregarNota() {
         let texto = document.getElementById("notaTexto").value.trim();
-        let fecha = document.getElementById("notaFecha").value;
         let materia = document.getElementById("notaMateria").value;
 
-        if (!texto || !fecha || !materia) {
+        if (!texto || !materia) {
             alert("Por favor, completa todos los campos.");
             return;
         }
 
-        let nuevaNota = { texto, fecha, materia, completada: true };
+        let nuevaNota = { texto, materia, completada: true };
 
         // Guardar en localStorage
         let notas = JSON.parse(localStorage.getItem("notas")) || [];
@@ -387,7 +382,6 @@
         
         // Limpiar los campos
         document.getElementById("notaTexto").value = "";
-        document.getElementById("notaFecha").value = "";
         document.getElementById("notaMateria").value = "";
     }
 
