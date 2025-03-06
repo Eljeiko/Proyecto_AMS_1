@@ -321,7 +321,7 @@
 					return;
 				}
 
-				let tareas = JSON.parse(localStorage.getItem("externalTasks")) || [];
+				let tareas = JSON.parse(localStorage.getItem("btn1Tasks")) || [];
 
 				const tarea = {
 					nombre: taskName,
@@ -333,7 +333,8 @@
 				};
 
 				tareas.push(tarea);
-				localStorage.setItem("externalTasks", JSON.stringify(tareas));
+				localStorage.setItem("btn1Tasks", JSON.stringify(tareas));
+				mostrarTareas();
 
 				checkReminders(); 
 
@@ -344,7 +345,7 @@
 			}
 
 			function checkReminders() {
-				let tareas = JSON.parse(localStorage.getItem("externalTasks")) || [];
+				let tareas = JSON.parse(localStorage.getItem("btn1Tasks")) || [];
 				let now = new Date();
 
 				tareas.forEach((tarea, index) => {
@@ -360,7 +361,7 @@
 							showNotification(`Recordatorio: ${tarea.nombre}`, `Tienes una tarea pendiente: ${tarea.subtareas.join(", ")}`);
 
 							tareas[index].notificada = true; 
-							localStorage.setItem("externalTasks", JSON.stringify(tareas));
+							localStorage.setItem("btn1Tasks", JSON.stringify(tareas));
 						}
 					}
 				});
@@ -382,6 +383,38 @@
 			function cerrarNotificacion() {
 				document.getElementById("notificacionModal").style.display = "none";
 			}
+
+		function mostrarTareas() {
+				let tareas = JSON.parse(localStorage.getItem("btn1Tasks")) || [];
+				let tareasList = document.getElementById("tareasList");
+
+				tareasList.innerHTML = ""; // 🔥 LIMPIAR ANTES DE MOSTRAR NUEVAS
+
+				if (tareas.length === 0) {
+					tareasList.innerHTML = "<p>No hay tareas guardadas.</p>";
+					return;
+				}
+
+				tareas.forEach((tarea, index) => {
+					let tareaDiv = document.createElement("div");
+					tareaDiv.className = "tarea-item";
+					tareaDiv.innerHTML = `
+            <h3>Tarea ${index + 1}</h3>
+            <p><strong>Nombre:</strong> ${tarea.nombre}</p>
+            <p><strong>Subtareas:</strong> ${tarea.subtareas.join(", ")}</p>
+            <p><strong>Horas invertidas:</strong> ${tarea.horas}</p>
+            <p><strong>Fecha de recordatorio:</strong> ${new Date(tarea.reminder).toLocaleString()}</p>
+        `;
+					tareasList.appendChild(tareaDiv);
+				});
+
+				console.log("✅ Tareas mostradas correctamente:", tareas);
+			}
+
+			document.addEventListener("DOMContentLoaded", function () {
+					mostrarTareas(); // 🔥 CARGAR LAS TAREAS GUARDADAS AL ABRIR LA PÁGINA
+				});
+
 
 
 
@@ -507,5 +540,6 @@
         window.location.href = "index.html";
       }
     </script>
+	 
   </body>
 </html>
