@@ -402,6 +402,8 @@
             <p><strong>Subtareas:</strong> ${tarea.subtareas.join(", ")}</p>
             <p><strong>Horas invertidas:</strong> ${tarea.horas}</p>
             <p><strong>Fecha de recordatorio:</strong> ${new Date(tarea.reminder).toLocaleString()}</p>
+            <button onclick="deleteTask(${index})" class="boton-borrar">❌ Eliminar</button>
+				
         `;
 					tareasList.appendChild(tareaDiv);
 				});
@@ -411,7 +413,18 @@
 			document.addEventListener("DOMContentLoaded", function () {
 					mostrarTareas();
 				});
+		
 				
+		function deleteTask(index) {
+				let tareas = JSON.parse(localStorage.getItem("btn1Tasks")) || [];
+
+				if (index >= 0 && index < tareas.length) {
+					tareas.splice(index, 1);
+					localStorage.setItem("btn1Tasks", JSON.stringify(tareas)); // Guardar cambios
+					mostrarTareas(); // 🔥 ACTUALIZAR LISTA DESPUÉS DE ELIMINAR
+				}
+			}
+
       function marcarTareaRealizada(index) {
         tareas[index].realizada = !tareas[index].realizada;
         mostrarTareas();
