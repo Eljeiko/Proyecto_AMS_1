@@ -35,7 +35,7 @@
       </div>
     </div>
     
-      <main class="mainPg">
+      <main class="mdl-layout__container">
         <div class="content">
           <!-- Sección de Tareas -->
           
@@ -67,7 +67,7 @@
       
           <!-- Sección de Crear Clase -->
           
-          <div class="section" id="createClass">
+          <div class="section" id="createClase">
               <h2>Crear Clase</h2>
               <input type="text" id="className" placeholder="Nombre de la materia..." />
               <input type="text" id="classTeacher" placeholder="Nombre del docente..." />
@@ -86,7 +86,7 @@
          <!-- Sección de Metas -->
          
           
-          <div class="section" id="listaMetas">
+          <div class="section" id="metasList">
               <h2>Establecer Metas</h2>
               <input type="text" id="metaTitulo" placeholder="Título de la meta" />
               <textarea id="metaDescripcion" placeholder="Descripción de la meta"></textarea>
@@ -97,9 +97,10 @@
               </select>
               <button onclick="crearMeta()">Crear Meta</button>
               <button onclick="limpiarMetas()">Limpiar Todas las Metas</button>
-              <div id="listaMetas"></div>
+              
           </div>
-
+          <div class="section" id="listaMetas"></div>
+          
           <!-- Calculadora de Promedio Semestral -->
           <div class="section" id="promedio">
             <h2>Calculadora de Promedio Semestral</h2>
@@ -328,7 +329,7 @@
             let taskItem = document.createElement("div");
             taskItem.style.border = "1px solid #ccc";
             taskItem.style.padding = "10px";
-            taskItem.style.borderRadius = "5px";
+            taskItem.style.borderRadius = "10px";
             taskItem.style.backgroundColor = "#f9f9f9";
             taskItem.style.marginBottom = "10px";
 
@@ -347,6 +348,7 @@
                 <p>📅<strong> Fecha: </strong> ${task.subTasks}</p>
                 <p><strong> Horas: </strong> ${task.hours} horas</p>
             `;
+            
 
             // Agregar checkbox y texto de estado
             let estado = document.createElement("label");
@@ -545,6 +547,14 @@
             <button onclick="marcarMetaComoCompletada(${meta.id})">${meta.completada ? "Desmarcar" : "Completar"}</button>
             <button onclick="eliminarMeta(${meta.id})">Eliminar</button>
           `;
+          metaItem.style.display = "flex"
+          metaItem.style.flexDirection = "column"
+          metaItem.style.justifyContent = "center"
+          metaItem.style.alignItems = "center"
+          metaItem.style.padding = "10px"
+          metaItem.style.gap = "10px"
+          metaItem.style.border = "2px solid rgba(255, 255, 255, 0.2)"
+          metaItem.style.borderRadius = "10px"
           listaMetas.appendChild(metaItem);
         });
       }
@@ -552,9 +562,11 @@
       function marcarMetaComoCompletada(id) {
         const metas = JSON.parse(localStorage.getItem("metas")) || [];
         const metaIndex = metas.findIndex((meta) => meta.id === id);
+        
 
         if (metaIndex !== -1) {
           metas[metaIndex].completada = !metas[metaIndex].completada;
+          
           localStorage.setItem("metas", JSON.stringify(metas));
           mostrarMetas();
         }

@@ -16,16 +16,15 @@
         min-height: 100vh;
         background: rgb(68, 66, 66);
         height: 100vh;
-        
       }
       .container {
         
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 20px;
         width: 100%;
-       
+        gap: 10px;
+        padding-bottom: 20px; 
       }
       h1,
       h2 {
@@ -55,10 +54,10 @@
 
       input[type="text"],
       input[type="number"],
+      input[type="datetime-local"],
+      input[type="date"],
       textarea,
       select {
-        width: 80%;
-  
         background: transparent;
         border: none;
         outline: none;
@@ -68,8 +67,12 @@
         color: #ffffff;
         padding: 8px;
       }
+      input::placeholder{
+        color: #ffffff;
+      }
       textarea{
-        max-width: 200px;
+        width: 300px;
+        height: 150px;
       }
       button {
         width: 80%;
@@ -89,14 +92,60 @@
         background-color: #0056b3;
       }
       #formularioNota{
-        
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
         border-radius: 10px;
+        gap: 8px;
 
       }
       #formularioEvaluacion{
-        flex-direction: column;
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-content: center;
         align-items: center;
+        height: 250px;
+        gap: 8px;
+        button{
+          width: 50%;
+        }
+      }
+      #prom .form-group{
+        display: flex;
+        flex-direction: column;
+      }
+      #formularioTarea{
+        flex-direction: row;
+        justify-content: space-around;
+        width: 90%;
+        gap: 8px;
+        
+      }
+      #tareasList{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: stretch;
+        
+        overflow: auto;
+        gap: 8px;
+        width: 95%;
+      }
+      #evaluacionesList{
+        flex-direction: row;
+        justify-content: space-around;
+        width: 90%;
+        gap: 8px;
+      }
+      #actividadesList{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: stretch;
+        padding-inline: 5px;
+        overflow: auto;
+        gap: 8px;
+        width: 95%;
       }
       .finalizada {
         text-decoration: line-through;
@@ -115,12 +164,16 @@
         display: flex;
         width: 100%;
         flex-direction: column;
+        justify-content: center;
         border: 1px solid #ccc;
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
         justify-content: center;
         flex-basis: 25%;
+        overflow: auto;
+        
+        gap: 8px;
       }
       .promedio {
         font-size: 1.2em;
@@ -164,6 +217,7 @@
             type="text"
             id="subTasks"
             placeholder="Subtareas (separadas por comas)..."
+            style="flex-basis: 150%;"
           />
           <input
             type="number"
@@ -183,7 +237,7 @@
       <div class="section" id="notas">
         <h2>Notas</h2>
         <button onclick="mostrarFormularioNota()">Crear Nota</button>
-        <div id="formularioNota" style="display: none; justify-content: center;">
+        <div id="formularioNota" style="display: none;">
           <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
           <button onclick="agregarNota()">Agregar Nota</button>
         </div>
@@ -204,7 +258,7 @@
           </select>
           <label for="fechaEvaluacion">Fecha:</label>
           <input type="date" id="fechaEvaluacion" />
-          <label for="descripcionTemas">Descripción de los Temas:</label>
+          
           <textarea
             id="descripcionTemas"
             placeholder="Describe los temas evaluados..."
@@ -537,6 +591,7 @@
             <button class="boton-borrar" onclick="borrarNota(${index})">Borrar Nota</button>
             <hr>
           `;
+          notaDiv.style.width = "300px"
           notasList.appendChild(notaDiv);
         });
       }
@@ -597,6 +652,7 @@
             <button class="boton-borrar" onclick="borrarEvaluacion(${index})">Borrar Evaluación</button>
             <hr>
           `;
+          
           evaluacionesList.appendChild(evaluacionDiv);
         });
       }

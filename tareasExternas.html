@@ -36,7 +36,7 @@
     
       <main class="mdl-layout__content">
         <div class="page-content">
-            <h2>Tareas Externas</h2>
+            <h2 style="margin: 10px;">Tareas Externas</h2>
             <div id="tasksList"></div> <!-- Asegúrate de que este div esté en tu HTML -->
         </div>
     </main>
@@ -55,11 +55,16 @@
     
         tareas.forEach((tarea, index) => {
             let card = document.createElement("div");
+            card.style.display = "flex";
+            card.style.flexFlow = "column wrap";
+            card.style.alignItems = "center";
+            card.style.flexBasis = "25%";
+            card.style.width = "300px"
             card.style.border = "1px solid #ccc";
             card.style.padding = "10px";
             card.style.borderRadius = "5px";
-            card.style.backgroundColor = "#f9f9f9";
-            card.style.marginBottom = "10px";
+            card.style.backgroundColor = "transparent";
+            card.style.margin = "10px";
     
             // Checkbox
             let checkbox = document.createElement("input");
@@ -73,7 +78,7 @@
             // Contenido de la tarjeta
             card.innerHTML = `
                 <p><strong>📌 ${tarea.name}</strong></p>
-                <p>📅<strong> Fecha: </strong> ${tarea.subTasks}</p>
+                <p>📅<strong> subtareas: </strong> ${tarea.subTasks}</p>
                 <p><strong> Horas: </strong> ${tarea.hours} horas</p>
             `;
     
