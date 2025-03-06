@@ -373,8 +373,6 @@
 
 				mensaje.innerHTML = `<strong>${title}</strong><br>${message}`;
 				modal.style.display = "block";
-
-				// Ocultar la notificación después de 5 segundos
 				setTimeout(() => {
 					modal.style.display = "none";
 				}, 5000);
@@ -388,7 +386,7 @@
 				let tareas = JSON.parse(localStorage.getItem("btn1Tasks")) || [];
 				let tareasList = document.getElementById("tareasList");
 
-				tareasList.innerHTML = ""; // 🔥 LIMPIAR ANTES DE MOSTRAR NUEVAS
+				tareasList.innerHTML = ""; 
 
 				if (tareas.length === 0) {
 					tareasList.innerHTML = "<p>No hay tareas guardadas.</p>";
@@ -410,15 +408,10 @@
 
 				console.log("✅ Tareas mostradas correctamente:", tareas);
 			}
-
 			document.addEventListener("DOMContentLoaded", function () {
-					mostrarTareas(); // 🔥 CARGAR LAS TAREAS GUARDADAS AL ABRIR LA PÁGINA
+					mostrarTareas();
 				});
-
-
-
-
-
+				
       function marcarTareaRealizada(index) {
         tareas[index].realizada = !tareas[index].realizada;
         mostrarTareas();
