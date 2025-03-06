@@ -62,6 +62,11 @@
         // Crear la lista de notas
         notas.forEach((nota, index) => {
             let listItem = document.createElement("li");
+            listItem.style.display = "flex";
+            listItem.style.flexDirection = "column";
+            listItem.style.justifyContent = "space-around";
+            listItem.style.alignContent = "center";
+            listItem.style.alignItems = "center";
             listItem.style.marginBottom = "10px";
     
             listItem.innerHTML = `
@@ -91,4 +96,4 @@
     
     
 
-  </body>
+</body>
