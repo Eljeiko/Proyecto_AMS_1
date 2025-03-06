@@ -306,12 +306,10 @@
 					Notification.requestPermission();
 				}
 
-				// Revisar recordatorios cada 60 segundos
 				setInterval(checkReminders, 60000);
-				checkReminders(); // Primera ejecución inmediata
+				checkReminders(); 
 			});
 
-			// ✅ Función para agregar la tarea con recordatorio
 			function agregarTarea() {
 				const taskName = document.getElementById("taskName").value.trim();
 				const subTasks = document.getElementById("subTasks").value.trim();
@@ -337,10 +335,7 @@
 				tareas.push(tarea);
 				localStorage.setItem("externalTasks", JSON.stringify(tareas));
 
-				console.log("✅ Tarea guardada correctamente:", tarea);
-				console.log("📌 Todas las tareas almacenadas:", tareas);
-
-				checkReminders(); // Verificar recordatorios después de agregar una tarea
+				checkReminders(); 
 
 				document.getElementById("taskName").value = "";
 				document.getElementById("subTasks").value = "";
@@ -348,7 +343,6 @@
 				document.getElementById("taskReminder").value = "";
 			}
 
-			// ✅ Función que verifica los recordatorios cada minuto
 			function checkReminders() {
 				let tareas = JSON.parse(localStorage.getItem("externalTasks")) || [];
 				let now = new Date();
@@ -357,26 +351,21 @@
 					if (tarea.reminder && !tarea.notificada) {
 						let reminderTime = new Date(tarea.reminder);
 
-						console.log(`📅 Revisando tarea: ${tarea.nombre}`);
-						console.log(`⏳ Hora programada: ${reminderTime} | Hora actual: ${now}`);
-
 						if (reminderTime <= now) {
-							console.warn(`⚠️ ALERTA: Recordatorio activado para la tarea: ${tarea.nombre}`);
+							console.warn(`¡ALERTA! Recordatorio activado para la tarea: ${tarea.nombre}`);
 
-							// 🔥 Mostrar en consola y en pantalla
-							console.log(`🔔 Recordatorio: ${tarea.nombre}`);
-							alert(`🔔 Recordatorio: ${tarea.nombre}\n📌 Tienes una tarea pendiente: ${tarea.subtareas.join(", ")}`);
+							console.log(`Recordatorio: ${tarea.nombre}`);
+							alert(`Recordatorio: ${tarea.nombre}\n Tienes una tarea pendiente: ${tarea.subtareas.join(", ")}`);
 
 							showNotification(`Recordatorio: ${tarea.nombre}`, `Tienes una tarea pendiente: ${tarea.subtareas.join(", ")}`);
 
-							tareas[index].notificada = true; // ✅ Marcar como notificada
-							localStorage.setItem("externalTasks", JSON.stringify(tareas)); // ✅ Guardar el cambio
+							tareas[index].notificada = true; 
+							localStorage.setItem("externalTasks", JSON.stringify(tareas));
 						}
 					}
 				});
 			}
 
-			// ✅ Función para mostrar la notificación en pantalla
 			function showNotification(title, message) {
 				let modal = document.getElementById("notificacionModal");
 				let mensaje = document.getElementById("notificacionMensaje");
@@ -390,7 +379,6 @@
 				}, 5000);
 			}
 
-			// ✅ Función para cerrar manualmente la notificación
 			function cerrarNotificacion() {
 				document.getElementById("notificacionModal").style.display = "none";
 			}
