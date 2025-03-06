@@ -5,43 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestor de Materias</title>
     <style>
+      *{
+        color: #ccc;
+      }
       body {
         font-family: Arial, sans-serif;
-        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+        background: rgb(68, 66, 66);
+        height: 100vh;
+        
       }
       .container {
-        max-width: 800px;
-        margin: 0 auto;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 20px;
+        width: 100%;
+       
       }
       h1,
       h2 {
+        
         text-align: center;
+        
       }
+      h1, h2 :nth-child(1){
+        background-color: #0056b3;
+        
+      }
+
       .section {
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        grid-column: span 3;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background: rgba(70, 101, 146, 0.2);
+        border-radius: 10px;
+        overflow: auto;
+        gap: 5px;
+        justify-content: space-around;
+        align-content: center;
+        align-items: center;
       }
+
       input[type="text"],
       input[type="number"],
       textarea,
       select {
-        width: 100%;
+        width: 80%;
+  
+        background: transparent;
+        border: none;
+        outline: none;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        font-size: 16px;
+        color: #ffffff;
         padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
+      }
+      textarea{
+        max-width: 200px;
       }
       button {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
+        width: 80%;
+        height: 45px;
+        background: #f1f1f1;
         border: none;
+        outline: none;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 1);
         cursor: pointer;
-        margin-right: 5px;
+        font-size: 16px;
+        color: #000000;
+        font-weight: 600;
       }
+
       button:hover {
         background-color: #0056b3;
+      }
+      #formularioNota{
+        
+        justify-content: center;
+        border-radius: 10px;
+
+      }
+      #formularioEvaluacion{
+        flex-direction: column;
+        align-items: center;
       }
       .finalizada {
         text-decoration: line-through;
@@ -57,29 +112,41 @@
       .tarea-item,
       .nota-item,
       .evaluacion-item {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
         border: 1px solid #ccc;
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
+        justify-content: center;
+        flex-basis: 25%;
       }
       .promedio {
         font-size: 1.2em;
         font-weight: bold;
         margin-top: 10px;
       }
+      .nota-item{
+        width: 80%;
+      }
+    
+     
       .boton-regresar {
+        grid-column: span 9;
         margin-top: 20px;
         text-align: center;
       }
     </style>
   </head>
   <body>
+    <h1 id="nombreClase"></h1>
+    <h2 id="nombreDocente"></h2>
     <div class="container">
-      <h1 id="nombreClase"></h1>
-      <h2 id="nombreDocente"></h2>
+      
 
       <!-- Sección para tareas -->
-      <div class="section">
+      <div class="section" id="tareas">
         <h2>Tareas</h2>
         <button onclick="mostrarFormularioTarea()">Crear Tarea</button>
         <div id="formularioTarea" style="display: none">
@@ -104,10 +171,10 @@
       </div>
 
       <!-- Sección para notas -->
-      <div class="section">
+      <div class="section" id="notas">
         <h2>Notas</h2>
         <button onclick="mostrarFormularioNota()">Crear Nota</button>
-        <div id="formularioNota" style="display: none">
+        <div id="formularioNota" style="display: none; justify-content: center;">
           <textarea id="noteInput" placeholder="Escribe una nota..."></textarea>
           <button onclick="agregarNota()">Agregar Nota</button>
         </div>
@@ -115,7 +182,7 @@
       </div>
 
       <!-- Sección para evaluaciones -->
-      <div class="section">
+      <div class="section" id="eval">
         <h2>Evaluaciones</h2>
         <button onclick="mostrarFormularioEvaluacion()">
           Crear Evaluación
@@ -139,7 +206,7 @@
       </div>
 
       <!-- Sección para calcular promedio  -->
-      <div class="section">
+      <div class="section" id="prom">
         <h2>Calculadora de Promedio</h2>
         <div class="form-group">
           <label for="nombreActividad">Nombre de la Actividad:</label>
@@ -290,7 +357,7 @@
 
       // tareas
       function mostrarFormularioTarea() {
-        document.getElementById("formularioTarea").style.display = "block";
+        document.getElementById("formularioTarea").style.display = "flex";
       }
 
       function agregarTarea() {
@@ -352,7 +419,8 @@
 
       // notas
       function mostrarFormularioNota() {
-        document.getElementById("formularioNota").style.display = "block";
+        document.getElementById("formularioNota").style.display = "flex";
+
       }
 
       function agregarNota() {
@@ -391,11 +459,12 @@
       function borrarNota(index) {
         notas.splice(index, 1);
         mostrarNotas();
+        
       }
 
       // evaluaciones
       function mostrarFormularioEvaluacion() {
-        document.getElementById("formularioEvaluacion").style.display = "block";
+        document.getElementById("formularioEvaluacion").style.display = "flex";
       }
 
       function agregarEvaluacion() {

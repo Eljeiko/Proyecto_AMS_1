@@ -38,7 +38,7 @@
         <div class="page-content">
 
           <h2>Notas Guardadas</h2>
-<div id="notasGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+<div id="notasGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-inline: 20px;">
     <!-- Aquí se cargarán las notas -->
 </div>
 
@@ -54,11 +54,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     notas.forEach((nota) => {
         let card = document.createElement("div");
-        card.style.border = "1px solid #ccc";
+        
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.justifyContent = "space-around";
+        card.style.alignContent = "center";
+        card.style.alignItems = "center";
         card.style.padding = "10px";
         card.style.borderRadius = "5px";
-        card.style.backgroundColor = "#f9f9f9";
-
+        card.style.backgroundColor = "rgba(70, 101, 146, 0.2)";
+        
 
         //checkbox
         let checkbox = document.createElement("input");
@@ -76,13 +81,13 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         // Agregar el checkbox y texto de estado
         let estado = document.createElement("label");
-        estado.textContent = " Completada";
+        estado.textContent = "Completada";
         card.appendChild(checkbox);
         card.appendChild(estado);
 
         notasGrid.appendChild(card);
     });
 });
-</script>
+  </script>
 
-  </body>
+</body>

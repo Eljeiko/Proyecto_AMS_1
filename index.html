@@ -38,23 +38,23 @@
       <main class="mainPg">
         <div class="content">
           <!-- Sección de Tareas -->
-          <div class="tasksList">
-            <div class="section"> 
+          
+          <div class="section" id="tasksList"> 
             <h2>Tareas Externas</h2>
             <input type="text" id="taskName" placeholder="Nombre de la tarea..." />
             <input type="text" id="subTasks" placeholder="Subtareas (separadas por comas)..." />
             <input type="number" id="taskHours" placeholder="Horas invertidas..." />
             <button onclick="addTask()">Agregar Tarea</button>
             <button onclick="limpiarTareas()">Borrar Las Tareas Guardadas</button>
-            </div>
+            <div class="tasksList"></div>
           </div>
             
           
       
           <!-- Sección de Notas -->
-          <div class="notesList">
+          
            
-            <div class="section">
+          <div class="section" id="notesList">
             <h2>Agregar Nota</h2>
             <input type="text" id="notaTexto" placeholder="Escribe tu nota...">
             <input type="date" id="notaFecha">
@@ -62,60 +62,62 @@
               <option value="">Selecciona una materia</option>
             </select>
             <button onclick="agregarNota()">Agregar Nota</button>
-            </div>
+            <div class="notesList"></div>
             
           </div>
       
           <!-- Sección de Crear Clase -->
-          <div class="createClass">
-            <div class="section">
+          
+          <div class="section" id="createClass">
               <h2>Crear Clase</h2>
               <input type="text" id="className" placeholder="Nombre de la materia..." />
               <input type="text" id="classTeacher" placeholder="Nombre del docente..." />
-              <button onclick="createClass()">Crear Clase</button>
-              <button onclick="limpiarClases()">Borrar Clases Anteriores</button>
-            </div>
+              <button id="btn1" onclick="createClass()">Crear Clase</button>
+              <button id="btn2" onclick="limpiarClases()">Borrar Clases Anteriores</button>
+              <div class="createClass"></div>
           </div>
 
-          <div class="clases-container">
-            <div class="section">
-              <h2>Clases Creadas</h2>
-            </div>
+          
+          <div class="section" id="clases-container">
+              <div class="clases-container">
+                <h2>Clases Creadas</h2>
+              </div>
           </div>
       
          <!-- Sección de Metas -->
-         <div class="section">
-          <h2>Establecer Metas</h2>
-          <input type="text" id="metaTitulo" placeholder="Título de la meta" />
-          <textarea id="metaDescripcion" placeholder="Descripción de la meta"></textarea>
-          <input type="date" id="metaFechaLimite" />
-          <select id="metaCategoria">
-            <option value="academica">Académica</option>
-            <option value="bienestar">Bienestar Personal</option>
-          </select>
-          <button onclick="crearMeta()">Crear Meta</button>
-          <button onclick="limpiarMetas()">Limpiar Todas las Metas</button>
-          <div id="listaMetas"></div>
-        </div>
+         
+          
+          <div class="section" id="listaMetas">
+              <h2>Establecer Metas</h2>
+              <input type="text" id="metaTitulo" placeholder="Título de la meta" />
+              <textarea id="metaDescripcion" placeholder="Descripción de la meta"></textarea>
+              <input type="date" id="metaFechaLimite" />
+              <select id="metaCategoria">
+                <option value="academica">Académica</option>
+                <option value="bienestar">Bienestar Personal</option>
+              </select>
+              <button onclick="crearMeta()">Crear Meta</button>
+              <button onclick="limpiarMetas()">Limpiar Todas las Metas</button>
+              <div id="listaMetas"></div>
+          </div>
 
           <!-- Calculadora de Promedio Semestral -->
-          <div class="section">
+          <div class="section" id="promedio">
             <h2>Calculadora de Promedio Semestral</h2>
-            <div>
               <input type="text" id="materiaInput" placeholder="Nombre de la materia" />
               <input type="number" id="creditosInput" placeholder="Créditos" min="1" max="10" />
               <input type="number" id="notaInput" placeholder="Nota (0-10)" min="0" max="10" step="0.1" />
               <button onclick="agregarMateria()">Agregar Materia</button>
               <button onclick="calcularPromedio()">Calcular Promedio</button>
               <button onclick="limpiarMaterias()">Limpiar</button>
-            </div>
+            
             <div id="materiasContainer"></div>
             <div id="resultadoPromedio"></div>
           </div>
                 
           <!-- Sección Pomodoro -->
-          <div class="temp">
-            <div class="section">
+          
+          <div class="section" id="temp">
             
               <h2>Temporizador Pomodoro</h2>
               <label>Tiempo de trabajo (min):
@@ -128,30 +130,26 @@
               <button onclick="startPomodoro()">Iniciar</button>
               <button onclick="pausePomodoro()">Pausar</button>
               <button onclick="resetPomodoro()">Reiniciar</button>
-            </div>
+              <div class="temp"></div>
             
           </div>
       
           <!-- Reproductor de Spotify -->
           <div class="spotify-player">
             <div class="section">
-              <h2>Reproductor</h2>
               <iframe id="spotify-embed" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-                width="100%" height="380px" frameborder="0" allowtransparency="true" allow="encrypted-media">
+                width="100%" height="100%" frameborder="0" allowtransparency="true" allow="encrypted-media">
               </iframe>
             </div>
           </div>
       
-          <!-- Sección de Calendario -->
-          <div class="calendar">
+        <!-- Sección de Calendario -->
+        <div class="calendar">
             <div class="section">
-              <h2>Calendario</h2>
               <iframe src="https://calendar.google.com/calendar/embed?src=es-419%23week%40group.v.calendar.google.com&ctz=America%2FMexico_City"
-              style="border: 0" width="100%" height="600" frameborder="0" scrolling="no">
+              style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no">
             </iframe>
-          </div>
-           
-            
+          </div> 
         </div>
 
       </main>
